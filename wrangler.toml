@@ -1,0 +1,33 @@
+name = "shia-rijal-bot"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# ---------------------------------------------------------------------------
+# Durable Object: one instance per Telegram chat, drives the whole batch
+# pipeline via alarm() calls so it survives Worker restarts/redeploys and
+# resumes automatically from the last unfinished packet.
+# ---------------------------------------------------------------------------
+[[durable_objects.bindings]]
+name = "BOOK_PROCESSOR"
+class_name = "BookProcessor"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["BookProcessor"]
+
+# ---------------------------------------------------------------------------
+# R2 bucket: raw book text + per-entry byte-offset index + generated
+# part_XXX.json files are all stored here. The book itself is streamed in
+# and out — it is never fully buffered in Worker memory.
+# ---------------------------------------------------------------------------
+[[r2_buckets]]
+binding = "BOOK_STORAGE"
+bucket_name = "shia-rijal-bot-storage"
+
+# ---------------------------------------------------------------------------
+# Secrets (set with `wrangler secret put <NAME>` — never hardcode these):
+#   TELEGRAM_BOT_TOKEN
+#   AI_API_KEY
+#   AI_BASE_URL      (e.g. https://smartapi.shop/backend/v1, OpenAI-compatible)
+#   AI_MODEL
+# ---------------------------------------------------------------------------

@@ -1,0 +1,16 @@
+{
+  "name": "shia-rijal-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Telegram bot on Cloudflare Workers that splits a Shia rijal book into transmitter biographies and streams back translated JSON packets.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "secrets": "echo 'Run: wrangler secret put TELEGRAM_BOT_TOKEN / AI_API_KEY / AI_BASE_URL / AI_MODEL'"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
+  }
+}
